@@ -14,7 +14,9 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://0.0.0.0:27017/todolistDB");
+mongoose.connect(
+  "mongodb+srv://efo:mamamia@cluster0.xoecrgd.mongodb.net/todolistDB"
+);
 
 const itemsSchema = {
   name: String,
@@ -122,7 +124,7 @@ app.post("/delete", function (req, res) {
       }
     });
   } else {
-    List.findOneAndRemove(
+    List.findOneAndDelete(
       { name: listName },
       { $pull: { items: { _id: checkedItemId } } },
       function (err, foundList) {
@@ -131,6 +133,13 @@ app.post("/delete", function (req, res) {
         }
       }
     );
+
+    // List.findOneAndDelete(checkedItemId, function (err) {
+    //   if (!err) {
+    //     console.log("Removed successfully");
+    //     res.redirect("/" + listName);
+    //   }
+    // });
   }
 });
 
